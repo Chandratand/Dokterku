@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {DummyDoctor2, IconNext} from '../../../assets';
+import {IconNext} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
 const ListDoctor = ({profile, name, desc, type}) => {

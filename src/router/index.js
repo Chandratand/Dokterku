@@ -13,6 +13,7 @@ import {
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
+import ChooseDoctor from '../pages/ChooseDoctor';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -61,8 +62,8 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="ListDoctor"
-        component={ListDoctor}
+        name="ChooseDoctor"
+        component={ChooseDoctor}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
