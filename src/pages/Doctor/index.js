@@ -29,7 +29,7 @@ const Doctor = ({navigation}) => {
                   <DoctorCategory
                     key={item.id}
                     category={item.category}
-                    onPress={() => navigation.navigate('ListDoctor')}
+                    onPress={() => navigation.navigate('ChooseDoctor')}
                   />
                 );
               })}
