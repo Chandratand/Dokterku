@@ -23,6 +23,15 @@ const Register = ({navigation}) => {
       .then(success => {
         setLoading(false);
         setForm('reset');
+        // https://firebse.com/users/
+        const data = {
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
+        };
+        Fire.database()
+          .ref('users/' + success.user.uid + '/')
+          .set(data);
         console.log('register success: ', success);
       })
       .catch(error => {
