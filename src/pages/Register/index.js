@@ -21,6 +21,7 @@ const Register = ({navigation}) => {
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
         setLoading(false);
+        setForm('reset');
         console.log('register success: ', success);
       })
       .catch(error => {
