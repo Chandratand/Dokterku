@@ -1,14 +1,10 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {
-  DummyDoctor1,
-  IconAddPhoto,
-  IconRemovePhoto,
-  ILNullPhoto,
-} from '../../assets';
+import {showMessage} from 'react-native-flash-message';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {IconAddPhoto, IconRemovePhoto, ILNullPhoto} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
 import {colors, fonts} from '../../utils';
-import {launchImageLibrary} from 'react-native-image-picker';
 
 const UploadPhoto = ({navigation}) => {
   const [hasPhoto, setHasPhoto] = useState(false);
@@ -16,9 +12,18 @@ const UploadPhoto = ({navigation}) => {
   const getImage = () => {
     launchImageLibrary({includeBase64: true}, response => {
       console.log('response : ', response);
-      const source = {uri: response.assets[0].uri};
-      setPhoto(source);
-      setHasPhoto(true);
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'Oops, Anda tidak nemilih fotonya?',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        const source = {uri: response.assets[0].uri};
+        setPhoto(source);
+        setHasPhoto(true);
+      }
     });
   };
   return (
