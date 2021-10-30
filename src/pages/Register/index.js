@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../components';
-import {colors, useForm} from '../../utils';
+import {colors, getData, storeData, useForm} from '../../utils';
 import {Fire} from '../../config';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -23,7 +23,6 @@ const Register = ({navigation}) => {
       .then(success => {
         setLoading(false);
         setForm('reset');
-        // https://firebse.com/users/
         const data = {
           fullName: form.fullName,
           profession: form.profession,
@@ -32,6 +31,9 @@ const Register = ({navigation}) => {
         Fire.database()
           .ref('users/' + success.user.uid + '/')
           .set(data);
+
+        storeData('user', data);
+        navigation.navigate('UploadPhoto');
         console.log('register success: ', success);
       })
       .catch(error => {
@@ -45,8 +47,6 @@ const Register = ({navigation}) => {
         });
         console.log('error: ', error);
       });
-
-    // //() => navigation.navigate('UploadPhoto')
   };
   return (
     <>
