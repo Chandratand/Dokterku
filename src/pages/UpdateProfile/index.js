@@ -31,26 +31,26 @@ const UpdateProfile = ({navigation}) => {
     updateProfileData();
     navigation.replace('MainApp');
 
-    // console.log('new Password : ', password);
+    console.log('new Password : ', password);
 
-    // if (password.length > 0) {
-    //   if (password.length < 6) {
-    //     showMessage({
-    //       message: 'password kurang dari 6 karakter',
-    //       type: 'default',
-    //       backgroundColor: colors.error,
-    //       color: colors.white,
-    //     });
-    //   } else {
-    //     //update Password
-    //     updatePassword();
-    //     updateProfileData();
-    //     navigation.replace('MainApp');
-    //   }
-    // } else {
-    //   updateProfileData();
-    //   navigation.replace('MainApp');
-    // }
+    if (password.length > 0) {
+      if (password.length < 6) {
+        showMessage({
+          message: 'password kurang dari 6 karakter',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        //update Password
+        updatePassword();
+        updateProfileData();
+        navigation.replace('MainApp');
+      }
+    } else {
+      updateProfileData();
+      navigation.replace('MainApp');
+    }
   };
 
   const updatePassword = () => {
