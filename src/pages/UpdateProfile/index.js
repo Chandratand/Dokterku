@@ -1,7 +1,5 @@
-import React from 'react';
-import {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {useEffect} from 'react/cjs/react.development';
 import {ILNullPhoto} from '../../assets';
 import {Button, Gap, Header, Input, Profile} from '../../components';
 import {colors, getData, storeData} from '../../utils';
@@ -11,7 +9,6 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 const UpdateProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
-    photo: ILNullPhoto,
     fullName: '',
     profession: '',
     email: '',
@@ -22,6 +19,7 @@ const UpdateProfile = ({navigation}) => {
 
   useEffect(() => {
     getData('user').then(res => {
+      console.log('res', res);
       const data = res;
       setPhoto({uri: res.photo});
       setProfile(data);
@@ -30,6 +28,48 @@ const UpdateProfile = ({navigation}) => {
 
   const update = () => {
     console.log('profile: ', profile);
+    updateProfileData();
+    navigation.replace('MainApp');
+
+    // console.log('new Password : ', password);
+
+    // if (password.length > 0) {
+    //   if (password.length < 6) {
+    //     showMessage({
+    //       message: 'password kurang dari 6 karakter',
+    //       type: 'default',
+    //       backgroundColor: colors.error,
+    //       color: colors.white,
+    //     });
+    //   } else {
+    //     //update Password
+    //     updatePassword();
+    //     updateProfileData();
+    //     navigation.replace('MainApp');
+    //   }
+    // } else {
+    //   updateProfileData();
+    //   navigation.replace('MainApp');
+    // }
+  };
+
+  const updatePassword = () => {
+    Fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        //update password
+        user.updatePassword(password).catch(err => {
+          showMessage({
+            message: err.message,
+            type: 'default',
+            backgroundColor: colors.error,
+            color: colors.white,
+          });
+        });
+      }
+    });
+  };
+
+  const updateProfileData = () => {
     const data = profile;
     data.photo = photoForDB;
 
@@ -74,7 +114,7 @@ const UpdateProfile = ({navigation}) => {
 
           const source = {uri: response.assets[0].uri};
           setPhotoForDB(
-            `data: ${response.assets[0].type};base64, ${response.assets[0].base64}`,
+            `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
           );
           setPhoto(source);
         }
@@ -102,7 +142,12 @@ const UpdateProfile = ({navigation}) => {
           <Gap height={24} />
           <Input label="Email" value={profile.email} disable />
           <Gap height={24} />
-          <Input label="Password" value={profile.password} />
+          <Input
+            label="Password"
+            secureTextEntry
+            /*value={password}
+            onChangeText={value => setPassword(value)}*/
+          />
           <Gap height={40} />
           <Button title="Save Profile" onPress={update} />
         </View>
