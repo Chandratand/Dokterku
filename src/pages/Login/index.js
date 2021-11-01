@@ -1,11 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 import {ILLogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../components';
 import {Fire} from '../../config';
-import {colors, fonts, storeData, useForm} from '../../utils';
+import {colors, fonts, showError, storeData, useForm} from '../../utils';
 
 const Login = ({navigation}) => {
   const [form, setForm] = useForm({email: '', password: ''});
@@ -33,12 +32,7 @@ const Login = ({navigation}) => {
       .catch(err => {
         console.log('Error : ', err);
         dispatch({type: 'SET_LOADING', value: false});
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(err.message);
       });
   };
 
