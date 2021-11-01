@@ -145,8 +145,8 @@ const UpdateProfile = ({navigation}) => {
           <Input
             label="Password"
             secureTextEntry
-            /*value={password}
-            onChangeText={value => setPassword(value)}*/
+            value={password}
+            onChangeText={value => setPassword(value)}
           />
           <Gap height={40} />
           <Button title="Save Profile" onPress={update} />

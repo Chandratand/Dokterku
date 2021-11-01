@@ -14,6 +14,7 @@ const UserProfile = ({navigation}) => {
   });
   useEffect(() => {
     getData('user').then(res => {
+      console.log('user profile: ', res);
       const data = res;
       data.photo = {uri: res.photo};
 
