@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {
   DoctorCategory,
@@ -7,15 +7,32 @@ import {
   NewsItem,
   RatedDoctor,
 } from '../../components';
-import {colors, fonts, getData} from '../../utils';
+import {colors, fonts, getData, showError} from '../../utils';
 import {
   DummyDoctor1,
   DummyDoctor2,
   DummyDoctor3,
   JSONCategoryDoctor,
 } from '../../assets';
+import {Fire} from '../../config';
 
 const Doctor = ({navigation}) => {
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    Fire.database()
+      .ref('news/')
+      .once('value')
+      .then(res => {
+        console.log('data', res.val());
+        if (res.val()) {
+          setNews(res.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+  }, []);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.page}>
@@ -64,9 +81,16 @@ const Doctor = ({navigation}) => {
           />
           <Text style={styles.sectionLabel}>Good News</Text>
         </View>
-        <NewsItem />
-        <NewsItem />
-        <NewsItem />
+        {news.map(item => {
+          return (
+            <NewsItem
+              title={item.title}
+              date={item.date}
+              image={item.image}
+              key={item.id}
+            />
+          );
+        })}
       </View>
     </ScrollView>
   );
