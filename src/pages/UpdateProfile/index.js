@@ -11,25 +11,23 @@ const UpdateProfile = ({navigation}) => {
     fullName: '',
     profession: '',
     email: '',
+    photoForDB: '',
   });
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(ILNullPhoto);
-  const [photoForDB, setPhotoForDB] = useState('');
 
   useEffect(() => {
     getData('user').then(res => {
-      console.log('res', res);
       const data = res;
-      setPhoto({uri: res.photo});
+      data.photoForDB = res?.photo?.length > 1 ? res.photo : ILNullPhoto;
+      const tempPhoto = res?.photo?.length > 1 ? {uri: res.photo} : ILNullPhoto;
+      setPhoto(tempPhoto);
       setProfile(data);
     });
   }, []);
 
   const update = () => {
     console.log('profile: ', profile);
-    updateProfileData();
-    navigation.replace('MainApp');
-
     console.log('new Password : ', password);
 
     if (password.length > 0) {
@@ -39,11 +37,9 @@ const UpdateProfile = ({navigation}) => {
         //update Password
         updatePassword();
         updateProfileData();
-        navigation.replace('MainApp');
       }
     } else {
       updateProfileData();
-      navigation.replace('MainApp');
     }
   };
 
@@ -60,14 +56,16 @@ const UpdateProfile = ({navigation}) => {
 
   const updateProfileData = () => {
     const data = profile;
-    data.photo = photoForDB;
-
+    data.photo = profile.photoForDB;
+    delete data.photoForDB;
     Fire.database()
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
         console.log('success : ', data);
-        storeData('user', data);
+        storeData('user', data).then(() => {
+          navigation.replace('MainApp');
+        });
       })
       .catch(err => {
         showError(err.message);
@@ -92,9 +90,10 @@ const UpdateProfile = ({navigation}) => {
           console.log('response getImage: ', response);
 
           const source = {uri: response.assets[0].uri};
-          setPhotoForDB(
-            `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
-          );
+          setProfile({
+            ...profile,
+            photoForDB: `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
+          });
           setPhoto(source);
         }
       },
