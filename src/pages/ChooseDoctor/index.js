@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {DummyDoctor1} from '../../assets';
+import {StyleSheet, View} from 'react-native';
 import {Header, List} from '../../components';
 import {Fire} from '../../config';
 import {colors} from '../../utils';
@@ -49,7 +48,7 @@ const ChooseDoctor = ({navigation, route}) => {
             profile={{uri: doctor.data.photo}}
             name={doctor.data.fullName}
             desc={doctor.data.gender}
-            onPress={() => navigation.navigate('Chatting')}
+            onPress={() => navigation.navigate('DoctorProfile', doctor)}
           />
         );
       })}
