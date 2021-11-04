@@ -7,14 +7,8 @@ import {
   NewsItem,
   RatedDoctor,
 } from '../../components';
-import {colors, fonts, getData, showError} from '../../utils';
-import {
-  DummyDoctor1,
-  DummyDoctor2,
-  DummyDoctor3,
-  JSONCategoryDoctor,
-} from '../../assets';
 import {Fire} from '../../config';
+import {colors, fonts, showError} from '../../utils';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
@@ -100,7 +94,7 @@ const Doctor = ({navigation}) => {
                   <DoctorCategory
                     key={item.id}
                     category={item.category}
-                    onPress={() => navigation.navigate('ChooseDoctor')}
+                    onPress={() => navigation.navigate('ChooseDoctor', item)}
                   />
                 );
               })}

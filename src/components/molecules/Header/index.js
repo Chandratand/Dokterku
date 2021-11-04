@@ -37,5 +37,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary.normal,
     fontSize: 20,
     color: type === 'dark' ? colors.white : colors.text.primary,
+    textTransform: 'capitalize',
   }),
 });
