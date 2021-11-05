@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {DummyDoctor4, DummyDoctor5, DummyDoctor6} from '../../assets';
 import {List} from '../../components';
-import {colors, fonts, getData} from '../../utils';
 import {Fire} from '../../config';
+import {colors, fonts, getData} from '../../utils';
 
 const Messages = ({navigation}) => {
   const [user, setUser] = useState({});
@@ -47,16 +46,20 @@ const Messages = ({navigation}) => {
     });
   };
   return (
-    <View>
+    <View style={styles.page}>
       <Text style={styles.title}>Messages</Text>
       {historyChat.map(chat => {
+        const dataDoctor = {
+          id: chat.detailDoctor.uid,
+          data: chat.detailDoctor,
+        };
         return (
           <List
             key={chat.id}
             profile={{uri: chat.detailDoctor.photo}}
             name={chat.detailDoctor.fullName}
             desc={chat.lastContentChat}
-            onPress={() => navigation.navigate('Chatting')}
+            onPress={() => navigation.navigate('Chatting', dataDoctor)}
           />
         );
       })}
@@ -67,6 +70,7 @@ const Messages = ({navigation}) => {
 export default Messages;
 
 const styles = StyleSheet.create({
+  page: {backgroundColor: colors.white, flex: 1},
   title: {
     fontFamily: fonts.primary[600],
     fontSize: 20,
