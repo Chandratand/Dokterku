@@ -74,9 +74,18 @@ const Chatting = ({navigation, route}) => {
     const chatID = `${user.uid}_${dataDoctor.data.uid}`;
 
     const urlFireBase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
-
-    // console.log('data untuk dikirim : ', data);
-    //console.log('url firebase', urlFireBase);
+    const urlMessagesUser = `messages/${user.uid}/${chatID}`;
+    const urlMessagesDoctor = `messages/${dataDoctor.data.uid}/${chatID}`;
+    const dataHistoryChatForUser = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: dataDoctor.data.uid,
+    };
+    const dataHistoryChatForDoctor = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: user.uid,
+    };
 
     //kirim ke firebase
     Fire.database()
@@ -84,6 +93,11 @@ const Chatting = ({navigation, route}) => {
       .push(data)
       .then(() => {
         setChatConntent('');
+        //set history for user
+        Fire.database().ref(urlMessagesUser).set(dataHistoryChatForUser);
+
+        //set history for doctor
+        Fire.database().ref(urlMessagesDoctor).set(dataHistoryChatForDoctor);
       })
       .catch(err => {
         showError(err.message);
