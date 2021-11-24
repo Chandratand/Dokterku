@@ -9,7 +9,6 @@ const Register = ({navigation}) => {
     fullName: '',
     profession: '',
     email: '',
-    password: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -29,7 +28,6 @@ const Register = ({navigation}) => {
           profession: form.profession,
           email: form.email,
           uid: success.user.uid,
-          password: form.password,
         };
 
         Fire.database()

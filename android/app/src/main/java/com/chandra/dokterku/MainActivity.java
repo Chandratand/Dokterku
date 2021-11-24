@@ -1,4 +1,4 @@
-package com.mydoctor;
+package com.chandra.dokterku;
 
 import com.facebook.react.ReactActivity;
 
